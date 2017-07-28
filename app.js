@@ -21,12 +21,12 @@ geocode.fetchLocation(encodedAddress, (errorMessage, results) => {
     if(errorMessage){
         console.log(errorMessage);
     }else{
-        JSON.stringify(results, undefined, 2);
-        weather.getWeather(results.latitude, results.longitude, (errorMessage, results) => {
+        console.log(results.address);
+        weather.getWeather(results.latitude, results.longitude, (errorMessage, weatherResults) => {
             if(errorMessage){
                 console.log(errorMessage);
             }else{
-                console.log(results);
+                console.log(`It's currently ${weatherResults.temp}, but it feels like ${weatherResults.apparentTemperature}`);
             };
         });
     };

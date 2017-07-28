@@ -7,7 +7,8 @@ var getWeather = (lat, long, callback) => {
     }, (error, response, body) => {
         if(!error && response.statusCode === 200){
             callback(undefined, {
-                temp: body.currently.temperature
+                temp: body.currently.temperature,
+                apparentTemperature: body.currently.apparentTemperature
             });
         }else {
             callback('UH OH: unable to fetch weather :(');
