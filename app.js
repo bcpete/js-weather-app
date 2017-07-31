@@ -17,17 +17,27 @@ const argv = yargs
 
 var encodedAddress = geocode.geocodeAddress(argv.address);
 
-geocode.fetchLocation(encodedAddress, (errorMessage, results) => {
-    if(errorMessage){
-        console.log(errorMessage);
-    }else{
-        console.log(results.address);
-        weather.getWeather(results.latitude, results.longitude, (errorMessage, weatherResults) => {
-            if(errorMessage){
-                console.log(errorMessage);
-            }else{
-                console.log(`It's currently ${weatherResults.temp}, but it feels like ${weatherResults.apparentTemperature}`);
-            };
-        });
-    };
-});
+// Using callbacks instead of promises
+// geocode.fetchLocation(encodedAddress, (errorMessage, results) => {
+//     if(errorMessage){
+//         console.log(errorMessage);
+//     }else{
+//         console.log(results.address);
+//         weather.getWeather(results.latitude, results.longitude, (errorMessage, weatherResults) => {
+//             if(errorMessage){
+//                 console.log(errorMessage);
+//             }else{
+//                 console.log(`It's currently ${weatherResults.temp}, but it feels like ${weatherResults.apparentTemperature}`);
+//             }
+//         });
+//     }
+// });
+
+geocode.fetchLocation(encodedAddress).then((location)=> {
+    console.log(location.address);
+    return weather.getWeather(location.latitude, location.longitude);
+}).then((weatherResults) => {
+    console.log(`It's currently ${weatherResults.temp}, but it feels like ${weatherResults.apparentTemperature}`);
+}).catch((errorMessage) => {
+    console.log(errorMessage);
+})
